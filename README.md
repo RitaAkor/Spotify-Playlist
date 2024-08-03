@@ -53,3 +53,39 @@ This project demonstrates how to use Terraform to manage and automate Spotify pl
   `variable "api_key" {
   type = string
 }`
+- Create terraform.tfvars File:
+  `api_key = "the_generated_api_value"` 
+  - Replace "the_generated_api_value" with the API value from the authentication process.
+- Initialize Terraform:
+   `terraform init`
+# Step 5: Create a Playlist Using Data Sources
+- Create playlist.tf File:
+  - Use the following configuration to define and manage your Spotify playlists:
+    
+    `resource "spotify_playlist" "NaijaPraise" {
+  name   = "NaijaPraise"
+  tracks = ["6PGTBSagHYqLOMbuCjaI6H"]
+}`
+
+`data "spotify_search_track" "anendlessocean" {
+  artist = "anendlessocean"
+  limit  = 10
+}`
+
+`resource "spotify_playlist" "ForHeaven" {
+  name   = "For Heaven"
+  tracks = [
+    data.spotify_search_track.anendlessocean.tracks[1].id,
+    data.spotify_search_track.anendlessocean.tracks[2].id,
+    data.spotify_search_track.anendlessocean.tracks[3].id
+  ]
+}`
+- Review and Apply Changes:
+  - Run the following command to review the changes:
+    `terraform plan`
+  - Apply the changes:
+    `terraform apply -auto-approve`
+# Conclusion
+
+You’ve now set up Terraform to manage Spotify playlists, showcasing how infrastructure-as-code can extend beyond traditional tasks. With this setup, you can easily automate and manage your Spotify playlists using Terraform.
+
